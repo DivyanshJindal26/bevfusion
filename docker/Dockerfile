@@ -17,7 +17,7 @@ RUN pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url h
 RUN pip install Pillow==9.5.0
 RUN pip install tqdm
 RUN pip install torchpack
-RUN pip install mmcv==2.1.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
+RUN pip install openmim && mim install mmcv==2.1.0
 RUN pip install mmdet==3.1.0
 RUN pip install nuscenes-devkit
 RUN pip install mpi4py==3.1.4

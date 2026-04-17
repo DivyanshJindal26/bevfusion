@@ -74,11 +74,17 @@ pip install Pillow==9.5.0 tqdm torchpack numba==0.57.1 nuscenes-devkit
 
 ### Install mmcv
 
-Use the prebuilt wheel for torch 2.0 + cu121:
+Use `openmim` — OpenMMLab's installer that selects the correct prebuilt wheel for your torch/CUDA combination automatically. Building mmcv from source with plain pip fails because torch 2.1 headers require C++17.
 
 ```bash
-pip install mmcv==2.1.0 \
-    -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
+pip install openmim
+mim install mmcv==2.1.0
+```
+
+If `mim` cannot resolve exactly 2.1.0 for your torch build, let it pick the best compatible 2.x release:
+
+```bash
+mim install "mmcv>=2.0.0,<2.2.0"
 ```
 
 ### Install mmdetection
