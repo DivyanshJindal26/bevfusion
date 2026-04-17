@@ -41,17 +41,17 @@ All subsequent commands assume this environment is active.
 
 ## 3. Install PyTorch with CUDA 12 support
 
-PyTorch 2.0.1 ships cu121 wheels which are binary-compatible with a CUDA 12.0 driver.
+The earliest PyTorch version available in the cu121 index is 2.1.0, which is binary-compatible with a CUDA 12.0 driver.
 
 ```bash
-pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 \
+pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 \
     --index-url https://download.pytorch.org/whl/cu121
 ```
 
 Verify:
 ```bash
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
-# expected: 2.0.1+cu121 True
+# expected: 2.1.0+cu121 True
 ```
 
 ---
@@ -77,8 +77,8 @@ pip install Pillow==9.5.0 tqdm torchpack mpi4py==3.1.4 numba==0.57.1 nuscenes-de
 Use the prebuilt wheel for torch 2.0 + cu121:
 
 ```bash
-pip install mmcv==2.0.1 \
-    -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.0/index.html
+pip install mmcv==2.1.0 \
+    -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
 ```
 
 ### Install mmdetection
