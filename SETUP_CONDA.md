@@ -232,3 +232,14 @@ The CUDA driver library is not visible. On some clusters you need to load a modu
 
 **`mpi4py` build fails**
 Make sure `openmpi` is installed in the conda env (`conda install -c conda-forge openmpi`) and that `mpicc` is on your `PATH` before running `pip install mpi4py`.
+
+**`ImportError: undefined symbol: PyObject_GET_WEAKREFS_LISTPTR` (or similar symbol errors loading `libtorch_python.so`)**
+The error path points to a *different* conda environment (e.g. `dental_yolo`). This means `LD_LIBRARY_PATH` is polluted with library paths from another env. Fix for the current shell:
+```bash
+unset LD_LIBRARY_PATH
+```
+Then find and remove the source of the leak so it doesn't come back:
+```bash
+grep -rn "LD_LIBRARY_PATH" ~/.bashrc ~/.bash_profile ~/.profile 2>/dev/null
+```
+Remove or comment out any line that hardcodes a path to another conda environment. Never export `LD_LIBRARY_PATH` globally in `.bashrc` — conda manages library paths automatically when you `conda activate`.
