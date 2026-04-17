@@ -58,10 +58,10 @@ python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 
 ## 4. Install system-level build dependencies (no sudo)
 
-OpenMPI is needed by `torchpack`. If your cluster already has it loaded via modules, skip the conda install line.
+OpenMPI and mpi4py are needed by `torchpack`. Install both via conda so the MPI wrapper compiler and its dependencies are resolved automatically — building mpi4py with pip against a conda-forge OpenMPI fails because the conda cross-compiler (`x86_64-conda-linux-gnu-cc`) is not present by default.
 
 ```bash
-conda install -c conda-forge openmpi -y
+conda install -c conda-forge openmpi mpi4py -y
 ```
 
 ---
@@ -69,7 +69,7 @@ conda install -c conda-forge openmpi -y
 ## 5. Install Python dependencies
 
 ```bash
-pip install Pillow==9.5.0 tqdm torchpack mpi4py==3.1.4 numba==0.57.1 nuscenes-devkit
+pip install Pillow==9.5.0 tqdm torchpack numba==0.57.1 nuscenes-devkit
 ```
 
 ### Install mmcv
@@ -230,8 +230,11 @@ Your GPU architecture is not covered by the compiled gencode targets. Rebuild wi
 **`ImportError: libcuda.so.1: cannot open shared object file`**
 The CUDA driver library is not visible. On some clusters you need to load a module first, e.g. `module load cuda/12.0`. The conda env itself does not ship the driver library.
 
-**`mpi4py` build fails**
-Make sure `openmpi` is installed in the conda env (`conda install -c conda-forge openmpi`) and that `mpicc` is on your `PATH` before running `pip install mpi4py`.
+**`mpi4py` build fails — `x86_64-conda-linux-gnu-cc` not found**
+The conda-forge OpenMPI wrapper was configured with a conda cross-compiler that isn't in the env. Do not install `mpi4py` with pip against a conda-forge OpenMPI. Instead:
+```bash
+conda install -c conda-forge openmpi mpi4py -y
+```
 
 **`ImportError: undefined symbol: PyObject_GET_WEAKREFS_LISTPTR` (or similar symbol errors loading `libtorch_python.so`)**
 The error path points to a *different* conda environment (e.g. `dental_yolo`). This means `LD_LIBRARY_PATH` is polluted with library paths from another env. Fix for the current shell:
