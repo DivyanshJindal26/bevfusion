@@ -3,7 +3,10 @@
 #include <c10/cuda/CUDAGuard.h>
 #include <torch/types.h>
 
-#include <ATen/cuda/CUDAApplyUtils.cuh>
+namespace at { namespace cuda {
+template <typename T>
+inline T ATenCeilDiv(T a, T b) { return (a + b - 1) / b; }
+}} // namespace at::cuda
 
 #define CHECK_CUDA(x) \
   TORCH_CHECK(x.device().is_cuda(), #x " must be a CUDA tensor")

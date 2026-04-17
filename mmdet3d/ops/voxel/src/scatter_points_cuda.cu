@@ -2,7 +2,10 @@
 #include <ATen/cuda/CUDAContext.h>
 #include <torch/types.h>
 
-#include <ATen/cuda/CUDAApplyUtils.cuh>
+namespace at { namespace cuda {
+template <typename T>
+inline T ATenCeilDiv(T a, T b) { return (a + b - 1) / b; }
+}} // namespace at::cuda
 
 typedef enum { SUM = 0, MEAN = 1, MAX = 2 } reduce_t;
 
