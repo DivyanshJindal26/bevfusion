@@ -13,12 +13,12 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
 RUN conda install python=3.8
-RUN pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121
+RUN pip install torch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 --index-url https://download.pytorch.org/whl/cu118
 RUN pip install Pillow==9.5.0
 RUN pip install tqdm
 RUN pip install torchpack
-RUN pip install openmim && mim install mmcv==2.1.0
-RUN pip install mmdet==3.1.0
+RUN pip install openmim && mim install mmcv-full==1.7.2
+RUN pip install mmdet==2.28.2
 RUN pip install nuscenes-devkit
 RUN pip install mpi4py==3.1.4
 RUN pip install numba==0.57.1

@@ -41,17 +41,17 @@ All subsequent commands assume this environment is active.
 
 ## 3. Install PyTorch with CUDA 12 support
 
-The earliest PyTorch version available in the cu121 index is 2.1.0, which is binary-compatible with a CUDA 12.0 driver.
+CUDA 12.0 drivers are **backwards compatible** with the cu118 runtime, so we use torch+cu118. This is required because mmcv-full 1.x (which this codebase's API depends on) only has prebuilt wheels up to cu118+torch2.0.
 
 ```bash
-pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 \
-    --index-url https://download.pytorch.org/whl/cu121
+pip install torch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 \
+    --index-url https://download.pytorch.org/whl/cu118
 ```
 
 Verify:
 ```bash
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
-# expected: 2.1.0+cu121 True
+# expected: 2.0.0+cu118 True
 ```
 
 ---
@@ -72,25 +72,14 @@ conda install -c conda-forge openmpi mpi4py -y
 pip install Pillow==9.5.0 tqdm torchpack numba==0.57.1 nuscenes-devkit
 ```
 
-### Install mmcv
+### Install mmcv and mmdetection
 
-Use `openmim` — OpenMMLab's installer that selects the correct prebuilt wheel for your torch/CUDA combination automatically. Building mmcv from source with plain pip fails because torch 2.1 headers require C++17.
+This codebase uses mmdet **2.x** APIs (`mmdet.core.anchor`, etc.) that were removed in mmdet 3.x. We must use the last 2.x releases of both packages.
 
 ```bash
 pip install openmim
-mim install mmcv==2.1.0
-```
-
-If `mim` cannot resolve exactly 2.1.0 for your torch build, let it pick the best compatible 2.x release:
-
-```bash
-mim install "mmcv>=2.0.0,<2.2.0"
-```
-
-### Install mmdetection
-
-```bash
-pip install mmdet==3.1.0
+mim install mmcv-full==1.7.2   # last 1.x; has cu118+torch2.0 prebuilt wheel
+pip install mmdet==2.28.2       # last 2.x; API-compatible with this codebase
 ```
 
 ---
